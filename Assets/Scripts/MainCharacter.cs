@@ -10,21 +10,21 @@ public class MainCharacter : MonoBehaviour
 
     public float mouseSens = 1;
 
-    GameObject lookPoint, rightPoint;
     CharacterController characterController;
     Animator animator;
-    Vector3 frontMove, rightMove, gravity, poseCrouch = new Vector3(0, 0.66f, 0.06f), poseStand = new Vector3(0, 1, 0.06f);
-    float yatay, dikey, donus, speed = 1;
-    bool stand = true, run = false;
+    Vector3 gravity, poseCrouch = new Vector3(0, 0.66f, 0.06f), poseStand = new Vector3(0, 1, 0.06f);
+    float yatay, dikey, speed = 1;
+    bool stand = true, run = false, isLive = true;
     Rigidbody[] ragdollRb; Collider[] ragdollColl; bool rdState = false;
+    RaycastHit hit;
+    Ray ray;
+    Vector3 lookedAtPoint;
+
     private void Awake()
     {
-        rightMove.y = 0;
-        frontMove.y = 0;
+        lookedAtPoint.y = transform.position.y;
         gravity.x = 0; gravity.y = 0; gravity.z = 0;
         characterController = GetComponent<CharacterController>();
-        lookPoint = GameObject.FindWithTag("LookPoint");
-        rightPoint = GameObject.FindWithTag("RightPoint");
         animator = GetComponent<Animator>();
         ragdollRb = GetComponentsInChildren<Rigidbody>();
         ragdollColl = GetComponentsInChildren<Collider>();
@@ -52,6 +52,10 @@ public class MainCharacter : MonoBehaviour
         else
         {
             Walk();
+        }
+        if (isLive)
+        {
+            MouseLook();
         }
         Movement();
     }
@@ -111,25 +115,35 @@ public class MainCharacter : MonoBehaviour
         }
     }
 
+    void JoyStick()
+    {
+        //joystick ayarlarý yapýlacak
+    }
+    void MouseLook()
+    {
+        ray = GameObject.FindWithTag("MainCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.point.x - transform.position.x > 0.5f || hit.point.z - transform.position.z > 0.5f || hit.point.x - transform.position.x < -0.5f || hit.point.z - transform.position.z < -0.5f)
+            {
+                lookedAtPoint.x = hit.point.x; lookedAtPoint.z = hit.point.z;
+                transform.LookAt(lookedAtPoint);
+            }
+        }
+    }
+
     void Movement()
     {
         if (rdState == false)
         {
             yatay = Input.GetAxis("Horizontal"); dikey = Input.GetAxis("Vertical");
 
-            animator.SetFloat("Yatay", yatay);
-            animator.SetFloat("Dikey", dikey);
-
-            frontMove.x = -1 * (gameObject.transform.position.x - lookPoint.transform.position.x);
-            frontMove.z = -1 * (gameObject.transform.position.z - lookPoint.transform.position.z);
-
-            rightMove.x = -1 * (gameObject.transform.position.x - rightPoint.transform.position.x);
-            rightMove.z = -1 * (gameObject.transform.position.z - rightPoint.transform.position.z);
+            UpdateAnimator();
 
             if (characterController.isGrounded && gravity.y <= 0)
             {
-                characterController.Move(frontMove * dikey * Time.deltaTime * speed);
-                characterController.Move(rightMove * yatay * Time.deltaTime * speed);
+                characterController.Move(4f * Vector3.forward * dikey * Time.deltaTime * speed);
+                characterController.Move(4f * Vector3.right * yatay * Time.deltaTime * speed);
                 animator.SetBool("Grounded", true);
                 gravity.y = 0f;
             }
@@ -139,8 +153,8 @@ public class MainCharacter : MonoBehaviour
                 gravity.y -= 1;
                 characterController.Move(gravity * Time.deltaTime);
             }
-            donus = Input.GetAxis("Mouse X");
-            transform.Rotate(Vector3.up * donus);
+            //donus = Input.GetAxis("Mouse X");
+
         }
         //if (characterController.collisionFlags == CollisionFlags.None)
         //{
@@ -180,6 +194,7 @@ public class MainCharacter : MonoBehaviour
 
     public void RagdollState(bool state)
     {
+        isLive = !state;
         foreach (Rigidbody rb in ragdollRb)
         {
             rb.isKinematic = !state;
@@ -192,6 +207,7 @@ public class MainCharacter : MonoBehaviour
         characterController.enabled = !state;
         rdState = state;
     }
+
     public void VoiceCaution()
     {
         if (canVoicecCaution)
@@ -199,11 +215,29 @@ public class MainCharacter : MonoBehaviour
             StartCoroutine(Trigger());
         }
     }
+
     IEnumerator Trigger()
     {
         canVoicecCaution = false;// Debug.Log(canVoicecCaution);
         Instantiate(voicePref, gameObject.transform.position, transform.rotation);
         yield return new WaitForSeconds(3);
         canVoicecCaution = true;// Debug.Log(canVoicecCaution);
+    }
+
+    private void UpdateAnimator()
+    {
+        Vector3 axisVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        float forwardBackwardsMagnitude = 0;//ileri geri
+        float rightLeftMagnitude = 0;// sað sol
+        if (axisVector.magnitude > 0)//girdi varsa
+        {
+            Vector3 normalizedLookingAt = lookedAtPoint - transform.position;
+            normalizedLookingAt.Normalize();
+            forwardBackwardsMagnitude = Mathf.Clamp(Vector3.Dot(axisVector, normalizedLookingAt), -1, 1);//Ýki vektörün nokta çarpýmý
+            Vector3 perpendicularLookingAt = new Vector3(normalizedLookingAt.z, 0, -normalizedLookingAt.x);// öne bakýþ
+            rightLeftMagnitude = Mathf.Clamp(Vector3.Dot(axisVector, perpendicularLookingAt), -1, 1);
+        }
+        animator.SetFloat("Dikey", forwardBackwardsMagnitude);
+        animator.SetFloat("Yatay", rightLeftMagnitude);
     }
 }
