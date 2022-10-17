@@ -28,14 +28,26 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         AnimSet();
-        if (state == EnemyState.Patrol)
+        if (state is EnemyState.Patrol)
         {
             Patrol();
         }
-        else if (state == EnemyState.Alert)
+        else if (state is EnemyState.Alert)
         {
             agent.speed = runSpeed;
-            agent.SetDestination(lastLoc);
+            if (voiceHear == true)
+            {
+                agent.SetDestination(lastLoc);
+                if (Vector3.Distance(transform.position, lastLoc) <= agent.stoppingDistance + 1)
+                {
+                    voiceHear = false;
+                    state = EnemyState.Patrol;
+                }
+            }
+            else
+            {
+                agent.SetDestination(lastLoc);
+            }
         }
     }
     void Patrol()
@@ -46,14 +58,13 @@ public class Enemy : MonoBehaviour
         }
         else if (Vector3.Distance(transform.position, lastLoc) <= agent.stoppingDistance)
         {
-            agent.speed = walkSpeed;
             Invoke(nameof(GetBack), waitTime);
         }
     }
     void GetBack()
     {
         voiceHear = false;
-        state = EnemyState.Patrol;
+        agent.speed = walkSpeed;
         agent.SetDestination(patrolLine[count].transform.position);
     }
     void LatePatDes()

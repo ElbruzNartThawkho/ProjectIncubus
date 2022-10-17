@@ -8,7 +8,7 @@ public class MainCharacter : MonoBehaviour
     public GameObject voicePref;
     bool canVoicecCaution = true;
 
-    public float mouseSens = 1;
+    [SerializeField] int voiceCooldown = 8;
 
     CharacterController characterController;
     Animator animator;
@@ -18,11 +18,11 @@ public class MainCharacter : MonoBehaviour
     Rigidbody[] ragdollRb; Collider[] ragdollColl; bool rdState = false;
     RaycastHit hit;
     Ray ray;
-    Vector3 lookedAtPoint;
+    Vector3 looked2Point;
 
     private void Awake()
     {
-        lookedAtPoint.y = transform.position.y;
+        looked2Point.y = transform.position.y;
         gravity.x = 0; gravity.y = 0; gravity.z = 0;
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -126,8 +126,8 @@ public class MainCharacter : MonoBehaviour
         {
             if (hit.point.x - transform.position.x > 0.5f || hit.point.z - transform.position.z > 0.5f || hit.point.x - transform.position.x < -0.5f || hit.point.z - transform.position.z < -0.5f)
             {
-                lookedAtPoint.x = hit.point.x; lookedAtPoint.z = hit.point.z;
-                transform.LookAt(lookedAtPoint);
+                looked2Point.x = hit.point.x; looked2Point.z = hit.point.z;
+                transform.LookAt(looked2Point);
             }
         }
     }
@@ -220,7 +220,7 @@ public class MainCharacter : MonoBehaviour
     {
         canVoicecCaution = false;// Debug.Log(canVoicecCaution);
         Instantiate(voicePref, gameObject.transform.position, transform.rotation);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(8);
         canVoicecCaution = true;// Debug.Log(canVoicecCaution);
     }
 
@@ -231,7 +231,7 @@ public class MainCharacter : MonoBehaviour
         float rightLeftMagnitude = 0;// sað sol
         if (axisVector.magnitude > 0)//girdi varsa
         {
-            Vector3 normalizedLookingAt = lookedAtPoint - transform.position;
+            Vector3 normalizedLookingAt = looked2Point - transform.position;
             normalizedLookingAt.Normalize();
             forwardBackwardsMagnitude = Mathf.Clamp(Vector3.Dot(axisVector, normalizedLookingAt), -1, 1);//Ýki vektörün nokta çarpýmý
             Vector3 perpendicularLookingAt = new Vector3(normalizedLookingAt.z, 0, -normalizedLookingAt.x);// öne bakýþ
