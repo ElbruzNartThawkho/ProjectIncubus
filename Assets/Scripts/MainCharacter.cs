@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MainCharacter : MonoBehaviour
 {
-    public GameObject voicePref;
+    public GameObject stoneThrowingPoint, throwableStone, acidTrap;
     bool canVoicecCaution = true;
 
     [SerializeField] int voiceCooldown = 8;
@@ -32,6 +32,10 @@ public class MainCharacter : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Trapping();
+        }
         if (Input.GetKeyDown(KeyCode.V))
         {
             VoiceCaution();
@@ -208,18 +212,32 @@ public class MainCharacter : MonoBehaviour
         rdState = state;
     }
 
+    public void Trapping()
+    {
+        Instantiate(acidTrap, transform.position, acidTrap.transform.rotation);
+    }
+
     public void VoiceCaution()
     {
         if (canVoicecCaution)
         {
+            //if (Vector3.Distance(hit.point, transform.position) > 5)
+            //{
+            //    float dir = Vector3.Angle(transform.position, hit.point);
+
+            //}
+            goDes = hit.point;
             StartCoroutine(Trigger());
         }
     }
 
-    IEnumerator Trigger()
+    GameObject stone;
+    Vector3 goDes;
+    IEnumerator Trigger(float h = 0.5f, float v = 0.5f, bool visible = true)
     {
         canVoicecCaution = false;// Debug.Log(canVoicecCaution);
-        Instantiate(voicePref, gameObject.transform.position, transform.rotation);
+        stone = Instantiate(throwableStone, stoneThrowingPoint.transform.position, stoneThrowingPoint.transform.rotation);
+        stone.GetComponent<VoiceThrow>().GoDes(goDes, h, v, visible);
         yield return new WaitForSeconds(8);
         canVoicecCaution = true;// Debug.Log(canVoicecCaution);
     }

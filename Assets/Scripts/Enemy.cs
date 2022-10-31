@@ -15,6 +15,9 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public int count = 0;
     public bool voiceHear = false;
     public Vector3 lastLoc;
+
+    public GameObject caution, alarm;
+
     public enum EnemyState
     {
         Patrol = 0,
@@ -37,6 +40,10 @@ public class Enemy : MonoBehaviour
             agent.speed = runSpeed;
             if (voiceHear == true)
             {
+                if (alarm.activeSelf == false)
+                {
+                    caution.SetActive(true);
+                }
                 agent.SetDestination(lastLoc);
                 if (Vector3.Distance(transform.position, lastLoc) <= agent.stoppingDistance + 1)
                 {
@@ -46,6 +53,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+                alarm.SetActive(true); caution.SetActive(false);
                 agent.SetDestination(lastLoc);
             }
         }
@@ -54,10 +62,13 @@ public class Enemy : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, patrolLine[count].transform.position) <= agent.stoppingDistance)
         {
+            caution.SetActive(false); alarm.SetActive(false);
             LatePatDes();
         }
         else if (Vector3.Distance(transform.position, lastLoc) <= agent.stoppingDistance)
         {
+            alarm.SetActive(false);
+            caution.SetActive(true);
             Invoke(nameof(GetBack), waitTime);
         }
     }
