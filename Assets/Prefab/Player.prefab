@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 8338495552868409746}
   m_Layer: 3
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: PlayerHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2418,7 +2418,7 @@ GameObject:
   - component: {fileID: 8338495552868176757}
   m_Layer: 3
   m_Name: Eyes
-  m_TagString: Untagged
+  m_TagString: PlayerHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3699,6 +3699,7 @@ GameObject:
   - component: {fileID: 9069312900798343744}
   - component: {fileID: 8974415433784273330}
   - component: {fileID: 8974415433784273341}
+  - component: {fileID: 4069036946248938228}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -3722,7 +3723,7 @@ Transform:
   - {fileID: 8338495552868165969}
   - {fileID: 4729272387879137935}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 5.883, z: 0}
 --- !u!95 &9069312900798343744
 Animator:
@@ -3777,4 +3778,18 @@ MonoBehaviour:
   stoneThrowingPoint: {fileID: 8338495552868411509}
   throwableStone: {fileID: 5722853753808505623, guid: 888ae9b8aa826294f9e8cabf041a9e9d, type: 3}
   acidTrap: {fileID: 2173182927160315815, guid: 37c8c46fb9127d94cbce505ad7a597f5, type: 3}
+  playerHead: {fileID: 8338495552868409757}
   voiceCooldown: 8
+--- !u!65 &4069036946248938228
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8974415433784273340}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.6916378, z: 1}
+  m_Center: {x: 0, y: 1.0382744, z: 0}

@@ -6524,7 +6524,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 147756, guid: b914f597dc60ac94ead6d334b15d6622, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 147756, guid: b914f597dc60ac94ead6d334b15d6622, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -17368,7 +17368,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 123956, guid: 54dabe5d3db0f8141bfc1e5a978ee094, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 123956, guid: 54dabe5d3db0f8141bfc1e5a978ee094, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19316,7 +19316,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 151284, guid: ddc413674fbd6094fb373197897aadbf, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 151284, guid: ddc413674fbd6094fb373197897aadbf, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -25348,7 +25348,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 191868, guid: 56d3744b770c01044ad1bb2b6fdd65ce, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 191868, guid: 56d3744b770c01044ad1bb2b6fdd65ce, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -30485,7 +30485,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1803566906}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35864,7 +35864,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 164130, guid: 153a911f3443d404eb0ed69fbc149a02, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 164130, guid: 153a911f3443d404eb0ed69fbc149a02, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41422,7 +41422,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 135490, guid: 20835ebfc4c46754b87029a07c3887a8, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 135490, guid: 20835ebfc4c46754b87029a07c3887a8, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41530,7 +41530,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 102200, guid: daaae00e85b960e41ad98de75ef9b6de, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 102200, guid: daaae00e85b960e41ad98de75ef9b6de, type: 3}
       propertyPath: m_StaticEditorFlags

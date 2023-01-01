@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MainCharacter : MonoBehaviour
 {
-    public GameObject stoneThrowingPoint, throwableStone, acidTrap;
+    public GameObject stoneThrowingPoint, throwableStone, acidTrap, playerHead;
     bool canVoicecCaution = true;
 
     [SerializeField] int voiceCooldown = 8;
@@ -20,6 +20,7 @@ public class MainCharacter : MonoBehaviour
     Ray ray;
     Vector3 looked2Point;
 
+
     private void Awake()
     {
         looked2Point.y = transform.position.y;
@@ -29,6 +30,8 @@ public class MainCharacter : MonoBehaviour
         ragdollRb = GetComponentsInChildren<Rigidbody>();
         ragdollColl = GetComponentsInChildren<Collider>();
         RagdollState(false);
+        playerHead.GetComponent<SphereCollider>().enabled= true;
+        GetComponent<BoxCollider>().enabled = true;
     }
     private void Update()
     {
@@ -131,6 +134,8 @@ public class MainCharacter : MonoBehaviour
             if (hit.point.x - transform.position.x > 0.5f || hit.point.z - transform.position.z > 0.5f || hit.point.x - transform.position.x < -0.5f || hit.point.z - transform.position.z < -0.5f)
             {
                 looked2Point.x = hit.point.x; looked2Point.z = hit.point.z;
+
+                //Quaternion lookOnLook = Quaternion.LookRotation(looked2Point - transform.position); transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * 5f);
                 transform.LookAt(looked2Point);
             }
         }
@@ -207,6 +212,8 @@ public class MainCharacter : MonoBehaviour
         {
             coll.enabled = state;
         }
+        GetComponent<BoxCollider>().enabled = false;
+        playerHead.tag = "Untagged";
         animator.enabled = !state;
         characterController.enabled = !state;
         rdState = state;
